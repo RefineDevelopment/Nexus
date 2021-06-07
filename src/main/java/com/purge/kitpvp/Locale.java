@@ -1,4 +1,8 @@
 package com.purge.kitpvp;
 
-public class Locale {
+
+public enum Locale {
+
+    PLACEHOLDER,
+    BIGNIGGA
 }

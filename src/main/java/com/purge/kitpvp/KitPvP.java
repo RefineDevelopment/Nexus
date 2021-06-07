@@ -39,7 +39,7 @@ public class KitPvP extends JavaPlugin {
             kitManager = new KitManager();
             profileManager = new ProfileManager();
 
-            
+
         });
     }
 

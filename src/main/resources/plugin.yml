@@ -1,0 +1,6 @@
+name: KitPvP
+api-version: 1.8
+version: ${project.version}
+author: veltus5184
+main: club.veltus.kitpvp.KitPvP
+description: Open-source MongoDB based KitPvP plugin

@@ -1,6 +1,6 @@
-name: KitPvP
+name: Nexus
 api-version: 1.8
 version: ${git.commit.abbrev}
 author: veltus5184
 main: club.veltus.kitpvp.KitPvP
-description: Open-source MongoDB based KitPvP plugin
+description: Cheap MongoDB based KitPvP plugin

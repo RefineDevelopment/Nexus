@@ -1,5 +1,8 @@
 package xyz.refinedev.kitpvp.profile;
 
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.ReplaceOptions;
 import xyz.refinedev.kitpvp.KitPvP;
 import xyz.refinedev.kitpvp.kit.Kit;
 import lombok.Getter;
@@ -24,7 +27,7 @@ public class Profile {
     private int coins;
     private int kills;
     private int deaths;
-    private int winstreak;
+    private int killstreak;
 
     public Profile(UUID uuid, String name) {
         this.state = ProfileState.LOBBY;
@@ -33,22 +36,25 @@ public class Profile {
         this.coins = 0;
         this.kills = 0;
         this.deaths = 0;
-        this.winstreak = 0;
+        this.killstreak = 0;
 
         this.save();
         KitPvP.getInstance().getProfileManager().getProfiles().put(uuid, this);
     }
 
-    private void save() {
+    public void save() {
         Document document = new Document();
+        MongoCollection<Document> profiles = KitPvP.getInstance().getMongoDatabase().getCollection("profiles");
 
         document.put("uuid", uuid);
         document.put("name", name);
         document.put("coins", coins);
         document.put("kills", kills);
         document.put("deaths", deaths);
-        document.put("winstreak", winstreak);
+        document.put("killstreak", killstreak);
         document.put("ownedKits", this.ownedKits.stream().map(Kit::getName).collect(Collectors.toList()));
+
+        profiles.replaceOne(Filters.eq("uuid", uuid), document, new ReplaceOptions().upsert(true));
     }
 
     public Player getPlayer() {

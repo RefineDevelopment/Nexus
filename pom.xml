@@ -4,9 +4,24 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>club.veltus</groupId>
+    <groupId>xyz.refinedev</groupId>
     <artifactId>Nexus</artifactId>
     <version>1.0</version>
+
+    <organization>
+        <name>Refine Development</name>
+        <url>https://dsc.gg/refine</url>
+    </organization>
+
+    <developers>
+        <developer>
+            <name>veltus5184</name>
+            <roles>
+                <role>Owner</role>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

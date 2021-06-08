@@ -1,4 +1,4 @@
-package com.purge.kitpvp.utils;
+package xyz.refinedev.kitpvp.utils;
 
 import org.bukkit.ChatColor;
 

@@ -1,8 +1,7 @@
-package com.purge.kitpvp.profile;
+package xyz.refinedev.kitpvp.profile;
 
-import com.mongodb.DBCollection;
-import com.purge.kitpvp.KitPvP;
-import com.purge.kitpvp.kit.Kit;
+import xyz.refinedev.kitpvp.KitPvP;
+import xyz.refinedev.kitpvp.kit.Kit;
 import lombok.Getter;
 import lombok.Setter;
 import org.bson.Document;
@@ -10,7 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;

@@ -1,4 +1,4 @@
-package com.purge.kitpvp.profile;
+package xyz.refinedev.kitpvp.profile;
 
 public enum ProfileState {
     LOBBY,

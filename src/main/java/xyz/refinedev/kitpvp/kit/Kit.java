@@ -1,6 +1,6 @@
-package com.purge.kitpvp.kit;
+package xyz.refinedev.kitpvp.kit;
 
-import com.purge.kitpvp.KitPvP;
+import xyz.refinedev.kitpvp.KitPvP;
 
 import lombok.Getter;
 import lombok.Setter;

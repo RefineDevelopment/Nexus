@@ -1,6 +1,6 @@
-package com.purge.kitpvp.managers;
+package xyz.refinedev.kitpvp.managers;
 
-import com.purge.kitpvp.kit.Kit;
+import xyz.refinedev.kitpvp.kit.Kit;
 import lombok.Getter;
 
 import java.util.ArrayList;

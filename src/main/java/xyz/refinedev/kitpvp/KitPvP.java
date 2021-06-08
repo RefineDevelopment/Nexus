@@ -1,11 +1,11 @@
-package com.purge.kitpvp;
+package xyz.refinedev.kitpvp;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.purge.kitpvp.managers.KitManager;
-import com.purge.kitpvp.managers.ProfileManager;
+import xyz.refinedev.kitpvp.managers.KitManager;
+import xyz.refinedev.kitpvp.managers.ProfileManager;
 import lombok.Getter;
 import org.bson.Document;
 import org.bukkit.plugin.java.JavaPlugin;

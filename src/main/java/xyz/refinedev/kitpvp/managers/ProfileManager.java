@@ -1,6 +1,6 @@
-package com.purge.kitpvp.managers;
+package xyz.refinedev.kitpvp.managers;
 
-import com.purge.kitpvp.profile.Profile;
+import xyz.refinedev.kitpvp.profile.Profile;
 import lombok.Getter;
 
 import java.util.HashMap;

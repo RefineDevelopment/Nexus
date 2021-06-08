@@ -1,6 +1,6 @@
-package com.purge.kitpvp.utils;
+package xyz.refinedev.kitpvp.utils;
 
-import com.purge.kitpvp.KitPvP;
+import xyz.refinedev.kitpvp.KitPvP;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;

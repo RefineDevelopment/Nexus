@@ -1,4 +1,4 @@
-package com.purge.kitpvp;
+package xyz.refinedev.kitpvp;
 
 
 public enum Locale {

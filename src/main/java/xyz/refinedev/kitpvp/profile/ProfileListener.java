@@ -1,6 +1,6 @@
-package com.purge.kitpvp.profile;
+package xyz.refinedev.kitpvp.profile;
 
-import com.purge.kitpvp.KitPvP;
+import xyz.refinedev.kitpvp.KitPvP;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

@@ -1,2 +1,2 @@
-# KitPvP
-Open-source MongoDB-based KitPvP core
+# Nexus
+MongoDB-based KitPvP core

@@ -1,69 +1,49 @@
 package xyz.refinedev.kitpvp;
 
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import xyz.refinedev.kitpvp.managers.KitManager;
-import xyz.refinedev.kitpvp.managers.ProfileManager;
 import lombok.Getter;
-import org.bson.Document;
 import org.bukkit.plugin.java.JavaPlugin;
+import xyz.refinedev.kitpvp.handler.MongoHandler;
+import xyz.refinedev.kitpvp.kit.KitHandler;
+import xyz.refinedev.kitpvp.profile.ProfileHandler;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+@Getter
+public final class KitPvP extends JavaPlugin {
 
-public class KitPvP extends JavaPlugin {
+    @Getter
+    public static KitPvP instance;
 
-    @Getter public static KitPvP instance;
+    private ProfileHandler profileHandler;
+    private MongoHandler mongoHandler;
+    private KitHandler kitHandler;
 
-    // Managers
-    @Getter public KitManager kitManager;
-    @Getter public ProfileManager profileManager;
-
-    // Threads
-    @Getter public Executor mainThread;
-    @Getter public Executor mongoThread;
-    @Getter public Executor taskThread;
-
-    @Getter private MongoClient mongoClient;
-    @Getter private MongoDatabase mongoDatabase;
-    @Getter private static MongoCollection<Document> profiles;
+    /**
+     * Event triggered on the load of the plugin
+     */
 
     @Override
     public void onLoad() {
-
+        instance = this;
+        this.saveDefaultConfig();
     }
+
+    /**
+     * Event triggered on the enabling of the plugin
+     */
 
     @Override
     public void onEnable() {
-        instance = this;
-
-        // Threads
-        this.mainThread = Executors.newSingleThreadExecutor();
-        this.mongoThread = Executors.newSingleThreadExecutor();
-        this.taskThread = Executors.newSingleThreadExecutor();
-
-        mainThread.execute(() -> {
-            kitManager = new KitManager();
-            profileManager = new ProfileManager();
-
-
-        });
-
-        mongoThread.execute(this::connect);
+        this.mongoHandler = new MongoHandler(this);
+        this.kitHandler = new KitHandler(this);
+        this.profileHandler = new ProfileHandler(this);
     }
+
+    /**
+     * Event triggered on the disabling on the plugin
+     */
 
     @Override
     public void onDisable() {
-        instance = null;
+        profileHandler.getProfiles().forEach(profile -> profile.save(false));
     }
 
-    public void connect() {
-        MongoClientURI mongoClientURI = new MongoClientURI(getConfig().getString("mongo-uri"));
-        mongoClient = new MongoClient(mongoClientURI);
-        mongoDatabase = mongoClient.getDatabase("kitpvp");
-        profiles = mongoDatabase.getCollection("profiles");
-
-    }
 }

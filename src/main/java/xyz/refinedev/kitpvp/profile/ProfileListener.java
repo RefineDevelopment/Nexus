@@ -1,30 +1,38 @@
 package xyz.refinedev.kitpvp.profile;
 
-import org.bukkit.event.player.PlayerQuitEvent;
-import xyz.refinedev.kitpvp.KitPvP;
-import org.bukkit.entity.Player;
+import lombok.AllArgsConstructor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
+@AllArgsConstructor
 public class ProfileListener implements Listener {
 
-    @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        Profile profile;
+    private final ProfileHandler profileHandler;
 
-        if (!KitPvP.getInstance().getProfileManager().getProfiles().containsKey(player.getUniqueId())) {
-            profile = Profile.getByPlayer(player);
-            profile.save();
+    /**
+     * Event triggers when a player queues up to join a server
+     * @param event
+     */
+
+    @EventHandler
+    public void onPlayerJoinEvent(AsyncPlayerPreLoginEvent event) {
+
+        if (!profileHandler.hasProfile(event.getUniqueId())) {
+            new Profile(event.getUniqueId()).save(true);
         }
+
     }
+
+    /**
+     * Event triggers when a player leaves/quits the server
+     * @param event
+     */
 
     @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
-        Profile profile = Profile.getByUUID(player.getUniqueId());
-
-        profile.save();
+    public void onPlayerQuitEvent(PlayerQuitEvent event) {
+        profileHandler.getProfile(event.getPlayer().getUniqueId()).save(true);
     }
+
 }

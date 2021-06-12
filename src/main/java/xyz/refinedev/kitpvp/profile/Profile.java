@@ -1,15 +1,14 @@
 package xyz.refinedev.kitpvp.profile;
 
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
-import xyz.refinedev.kitpvp.KitPvP;
-import xyz.refinedev.kitpvp.kit.Kit;
 import lombok.Getter;
 import lombok.Setter;
 import org.bson.Document;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import xyz.refinedev.kitpvp.KitPvP;
+import xyz.refinedev.kitpvp.kit.Kit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,64 +19,99 @@ import java.util.stream.Collectors;
 @Setter
 public class Profile {
 
-    private ProfileState state;
+    private final UUID uuid;
+    private int coins, kills, deaths, streak;
     private List<Kit> ownedKits = new ArrayList<>();
-    private String name;
-    private UUID uuid;
-    private int coins;
-    private int kills;
-    private int deaths;
-    private int killstreak;
 
-    public Profile(UUID uuid, String name) {
-        this.state = ProfileState.LOBBY;
+    /**
+     * Profile Constructors Of Which Uses
+     * The UUID To Create An Object To Store The Data
+     * For a certain user/player
+     * @param uuid UUID of the user/player
+     */
+
+    public Profile(UUID uuid) {
         this.uuid = uuid;
-        this.name = name;
-        this.coins = 0;
-        this.kills = 0;
-        this.deaths = 0;
-        this.killstreak = 0;
 
-        this.save();
-        KitPvP.getInstance().getProfileManager().getProfiles().put(uuid, this);
+        KitPvP.getInstance().getProfileHandler().getProfileMap().put(uuid, this);
+        this.load();
     }
 
-    public void save() {
-        Document document = new Document();
-        MongoCollection<Document> profiles = KitPvP.getInstance().getMongoDatabase().getCollection("profiles");
+    /**
+     * Load Method For Profile
+     */
 
-        document.put("uuid", uuid);
-        document.put("name", name);
-        document.put("coins", coins);
-        document.put("kills", kills);
-        document.put("deaths", deaths);
-        document.put("killstreak", killstreak);
-        document.put("ownedKits", this.ownedKits.stream().map(Kit::getName).collect(Collectors.toList()));
+    public void load() {
+        Bukkit.getScheduler().runTaskAsynchronously(KitPvP.getInstance(), () -> {
+           Document document = KitPvP.getInstance().getMongoHandler().getProfiles()
+                   .find(new Document("_id", uuid.toString())).first();
 
-        profiles.replaceOne(Filters.eq("uuid", uuid), document, new ReplaceOptions().upsert(true));
+           if (document == null) return;
+
+           this.coins = document.getInteger("coins");
+           this.kills = document.getInteger("kills");
+           this.deaths = document.getInteger("deaths");
+           this.streak = document.getInteger("streak");
+           this.ownedKits = document.getList("kits", String.class)
+                   .stream().map(string -> KitPvP.getInstance().getKitHandler().getKit(string)).collect(Collectors.toList());
+        });
     }
 
-    public Player getPlayer() {
-        if (!Bukkit.getPlayer(uuid).isOnline()) {
-            return (Player) Bukkit.getOfflinePlayer(uuid);
+    /**
+     * Save Method For The Profile
+     * Saves To The Mongo Database
+     * @param async To save the profile async or not
+     */
+
+    public void save(boolean async) {
+
+        if (async) {
+            Bukkit.getScheduler().runTaskAsynchronously(KitPvP.getInstance(), () -> save(false));
+            return;
         }
 
+        Document document = KitPvP.getInstance().getMongoHandler().getProfiles()
+                .find(new Document("_id", uuid.toString())).first();
+
+        if (document == null) {
+            KitPvP.getInstance().getMongoHandler().getProfiles().insertOne(toBson());
+            return;
+        }
+
+        KitPvP.getInstance().getMongoHandler().getProfiles().replaceOne(document, toBson(), new ReplaceOptions().upsert(true));
+    }
+
+    /**
+     * Turns the profile's data into a document
+     * @return
+     */
+
+    public Document toBson() {
+        return new Document()
+                .append("_id", uuid.toString())
+                .append("coins", coins)
+                .append("kills", kills)
+                .append("deaths", deaths)
+                .append("streak", kills)
+                .append("kits", ownedKits.stream().map(Kit::getName).collect(Collectors.toList()));
+    }
+
+    /**
+     * Get's the online-player of the profile
+     * @return
+     */
+
+    public Player getPlayer() {
         return Bukkit.getPlayer(uuid);
     }
 
-    public static Profile getByUUID(UUID uuid) {
-        for (Profile profile : KitPvP.getInstance().getProfileManager().getProfiles().values()) {
-            if (profile.getUuid().equals(uuid)) return profile;
-        }
+    /**
+     * Get's the offline-player of the profile
+     * @return
+     */
 
-        return new Profile(uuid, Bukkit.getPlayer(uuid).getName());
+    public OfflinePlayer getOfflinePlayer() {
+        return Bukkit.getOfflinePlayer(uuid);
     }
 
-    public static Profile getByPlayer(Player player) {
-        for (Profile profile : KitPvP.getInstance().getProfileManager().getProfiles().values()) {
-            if (profile.getUuid().equals(player.getUniqueId())) return profile;
-        }
-
-        return new Profile(player.getUniqueId(), player.getName());
-    }
 }

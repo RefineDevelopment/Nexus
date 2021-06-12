@@ -4,13 +4,15 @@ import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.refinedev.kitpvp.handler.MongoHandler;
 import xyz.refinedev.kitpvp.kit.KitHandler;
+import xyz.refinedev.kitpvp.listener.SignListener;
+import xyz.refinedev.kitpvp.listener.StatsListener;
 import xyz.refinedev.kitpvp.profile.ProfileHandler;
 
 @Getter
 public final class KitPvP extends JavaPlugin {
 
     @Getter
-    public static KitPvP instance;
+    private static KitPvP instance;
 
     private ProfileHandler profileHandler;
     private MongoHandler mongoHandler;
@@ -38,12 +40,23 @@ public final class KitPvP extends JavaPlugin {
     }
 
     /**
+     * Void method to register the plugin's
+     * necessary classes to work
+     */
+
+    public void registerPlugin() {
+        this.getServer().getPluginManager().registerEvents(new SignListener(), this);
+        this.getServer().getPluginManager().registerEvents(new StatsListener(), this);
+    }
+
+    /**
      * Event triggered on the disabling on the plugin
      */
 
     @Override
     public void onDisable() {
         profileHandler.getProfiles().forEach(profile -> profile.save(false));
+        kitHandler.getKits().forEach(kit -> kit.save(false));
     }
 
 }

@@ -13,5 +13,4 @@ I've done a compelete recode of the entire system, including kits and all, I've 
 * Added Full New Util System
 * Added Command API and more!
 ### To Do 
-* Add Commands
-* and a lot more.... ;(
+* Almost Finished :)

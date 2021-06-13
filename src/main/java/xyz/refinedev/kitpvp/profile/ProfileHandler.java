@@ -12,13 +12,15 @@ import java.util.function.Consumer;
 
 public class ProfileHandler {
 
-    @Getter private final Map<UUID, Profile> profileMap = new ConcurrentHashMap<>();
+    @Getter
+    private final Map<UUID, Profile> profileMap = new ConcurrentHashMap<>();
     private final KitPvP kitPvP;
 
     /**
      * Constructor For The Profile Handler
      * This Handler Manages The Profiles
      * And How They Are Stored
+     *
      * @param kitPvP A constrcutor paramater connecting to the main clas
      */
 
@@ -43,6 +45,7 @@ public class ProfileHandler {
 
     /**
      * Gets A Valid Profile For A User
+     *
      * @param uuid UUID Of User Specified
      * @return
      */
@@ -53,16 +56,19 @@ public class ProfileHandler {
 
     /**
      * Gets a collection of profiles or a list/All Profiles
+     *
      * @return
      */
 
     public final Collection<Profile> getProfiles() {
         return profileMap.values();
 
-}
+    }
+
     /**
      * Checks if a certain UUID
      * Has A Profile
+     *
      * @param uuid UUID of the user
      * @return
      */

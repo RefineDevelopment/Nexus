@@ -18,6 +18,7 @@ public class SignListener implements Listener {
     /**
      * Event triggers when a sign is written
      * This event helps to create kit-signs
+     *
      * @param event
      */
 
@@ -45,6 +46,7 @@ public class SignListener implements Listener {
     /**
      * Event triggers when a kit sign is clicked
      * Event applies kit items to player's inventory
+     *
      * @param event
      */
 
@@ -64,6 +66,12 @@ public class SignListener implements Listener {
         Kit kit = KitPvP.getInstance().getKitHandler().getKit(ChatColor.stripColor(sign.getLine(1)));
 
         if (kit == null) return;
+
+        if (!KitPvP.getInstance().getProfileHandler().getProfile(player.getUniqueId()).getOwnedKits().contains(kit)
+                && !player.hasPermission("kitpvp.kit")) {
+            player.sendMessage(CC.translate("&cYou do not own this kit to claim it!"));
+            return;
+        }
 
         kit.apply(player);
     }

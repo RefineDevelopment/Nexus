@@ -11,13 +11,15 @@ import java.util.function.Consumer;
 
 public class KitHandler {
 
-    @Getter private final Map<String, Kit> kitMap = new ConcurrentHashMap<>();
+    @Getter
+    private final Map<String, Kit> kitMap = new ConcurrentHashMap<>();
     private final KitPvP kitPvP;
 
     /**
      * KitHandler Of Which Handles
      * Managing The Kit System Of
      * The Project
+     *
      * @param kitPvP
      */
 
@@ -29,18 +31,19 @@ public class KitHandler {
     /**
      * Load Method To Load In
      * All Available Kits
-      */
+     */
 
     public void load() {
         kitPvP.getServer().getScheduler().runTaskAsynchronously(kitPvP, () -> {
-           kitPvP.getMongoHandler().getKits().find().forEach((Consumer<? super Document>) document -> {
-               new Kit(document.getString("_id"));
-           });
+            kitPvP.getMongoHandler().getKits().find().forEach((Consumer<? super Document>) document -> {
+                new Kit(document.getString("_id"));
+            });
         });
     }
 
     /**
      * Gets a kit specific to a name
+     *
      * @param name Name Of The Kit
      * @return
      */
@@ -51,6 +54,7 @@ public class KitHandler {
 
     /**
      * Gets all kits
+     *
      * @return
      */
 

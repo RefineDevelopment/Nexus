@@ -13,6 +13,7 @@ public class ProfileListener implements Listener {
 
     /**
      * Event triggers when a player queues up to join a server
+     *
      * @param event
      */
 
@@ -27,6 +28,7 @@ public class ProfileListener implements Listener {
 
     /**
      * Event triggers when a player leaves/quits the server
+     *
      * @param event
      */
 

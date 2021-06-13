@@ -22,11 +22,13 @@ public class Profile {
     private final UUID uuid;
     private int coins, kills, deaths, streak;
     private List<Kit> ownedKits = new ArrayList<>();
+    private boolean build;
 
     /**
      * Profile Constructors Of Which Uses
      * The UUID To Create An Object To Store The Data
      * For a certain user/player
+     *
      * @param uuid UUID of the user/player
      */
 
@@ -43,23 +45,24 @@ public class Profile {
 
     public void load() {
         Bukkit.getScheduler().runTaskAsynchronously(KitPvP.getInstance(), () -> {
-           Document document = KitPvP.getInstance().getMongoHandler().getProfiles()
-                   .find(new Document("_id", uuid.toString())).first();
+            Document document = KitPvP.getInstance().getMongoHandler().getProfiles()
+                    .find(new Document("_id", uuid.toString())).first();
 
-           if (document == null) return;
+            if (document == null) return;
 
-           this.coins = document.getInteger("coins");
-           this.kills = document.getInteger("kills");
-           this.deaths = document.getInteger("deaths");
-           this.streak = document.getInteger("streak");
-           this.ownedKits = document.getList("kits", String.class)
-                   .stream().map(string -> KitPvP.getInstance().getKitHandler().getKit(string)).collect(Collectors.toList());
+            this.coins = document.getInteger("coins");
+            this.kills = document.getInteger("kills");
+            this.deaths = document.getInteger("deaths");
+            this.streak = document.getInteger("streak");
+            this.ownedKits = document.getList("kits", String.class)
+                    .stream().map(string -> KitPvP.getInstance().getKitHandler().getKit(string)).collect(Collectors.toList());
         });
     }
 
     /**
      * Save Method For The Profile
      * Saves To The Mongo Database
+     *
      * @param async To save the profile async or not
      */
 
@@ -83,6 +86,7 @@ public class Profile {
 
     /**
      * Turns the profile's data into a document
+     *
      * @return
      */
 
@@ -98,6 +102,7 @@ public class Profile {
 
     /**
      * Get's the online-player of the profile
+     *
      * @return
      */
 
@@ -107,6 +112,7 @@ public class Profile {
 
     /**
      * Get's the offline-player of the profile
+     *
      * @return
      */
 

@@ -2,6 +2,7 @@ package xyz.refinedev.kitpvp.kit;
 
 import com.mongodb.client.model.ReplaceOptions;
 import lombok.Getter;
+import lombok.Setter;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -12,6 +13,7 @@ import xyz.refinedev.kitpvp.util.Serializer;
 import java.io.IOException;
 
 @Getter
+@Setter
 public class Kit {
 
     private final String name;
@@ -20,6 +22,7 @@ public class Kit {
     /**
      * Kit Object For Kits
      * Of Which Are Used In The GameMode
+     *
      * @param name Name of the Kit
      */
 
@@ -30,6 +33,7 @@ public class Kit {
 
     /**
      * Applying The Kit For A Player/Target/User
+     *
      * @param target Player of which the kit will be applied to
      */
 
@@ -42,6 +46,7 @@ public class Kit {
      * Update Method To Update
      * The Kit's Contents To The
      * Contents Of A Specific User
+     *
      * @param player Player/User to update the conetnts to
      */
 
@@ -75,6 +80,7 @@ public class Kit {
      * Save Method To Save
      * The Kit To The Mongo
      * Database
+     *
      * @param async Either if the saving is done async or not
      */
 
@@ -97,8 +103,31 @@ public class Kit {
     }
 
     /**
+     * Deletes Kit From The Both
+     * Ram, Database
+     *
+     * @param async Either the task is ran async or not
+     */
+
+    public void remove(boolean async) {
+
+        if (async) {
+            Bukkit.getScheduler().runTaskAsynchronously(KitPvP.getInstance(), () -> remove(false));
+            return;
+        }
+
+        KitPvP.getInstance().getKitHandler().getKitMap().remove(name.toLowerCase(), this);
+        Document document = KitPvP.getInstance().getMongoHandler().getKits()
+                .find(new Document("_id", name)).first();
+
+        if (document != null)
+            KitPvP.getInstance().getMongoHandler().getKits().deleteOne(document);
+    }
+
+    /**
      * Turns The Kit's Data Into
      * A MongoDatabase/Bson Document
+     *
      * @return
      */
 

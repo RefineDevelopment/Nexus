@@ -12,5 +12,5 @@ I've done a compelete recode of the entire system, including kits and all, I've 
 * Profile System
 * Added Full New Util System
 * Added Command API and more!
-### To Do 
-* Almost Finished :)
+### Information
+This was an unfinished kit-pvp core made by damt for RefineDevelopment that was never completed and after his departure from the community, I think its wise to just open source this abandoned project. Please credit the original authors and don't try to re-sell this as your own.

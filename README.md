@@ -2,10 +2,10 @@
 MongoDB-based KitPvP core
 
 ### Authors
-* Previous Author: Veltus
-* New Author: damt
+* Previous Author: Kaya
+* New Author: Damt
 
-### What did I do (damt)
+### Work done by damt
 I've done a compelete recode of the entire system, including kits and all, I've made it more optimized and more complex and helps the server compete, I've organized the project and fixed up a lot of bugs! I've added the following so far:
 * Complete Recode
 * Kit System
